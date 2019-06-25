@@ -3,7 +3,7 @@
 import java.util.Scanner;
 
 public class Calender2DArray {
-	static int[][] calender = new int[5][7];
+	static int[][] calender = new int[6][7];
 	static int[] month = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 	static void initCal() {
