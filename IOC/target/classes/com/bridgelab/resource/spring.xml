@@ -1,0 +1,5 @@
+<beans autowired="by Type">
+<Context:Component-scan base-package="com.bridgelab.cab.engine.Engine"/>
+<Context:Component-scan base-package="com.bridgelab.cab.engine.Car"/>
+<Context:annotation-Config/>
+</beans>

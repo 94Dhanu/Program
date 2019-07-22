@@ -1,0 +1,11 @@
+package com.bridgelab.cab.car;
+@Componat
+public class Car 
+{
+@Autowired
+private Engine engine;
+public void printdata()
+{
+	System.out.println("Engine:"+ems.getName());
+}
+}

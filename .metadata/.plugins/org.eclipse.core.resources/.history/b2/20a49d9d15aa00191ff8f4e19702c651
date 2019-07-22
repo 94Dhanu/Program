@@ -1,0 +1,16 @@
+package Spring.com.bridgelab.spring;
+
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.bridgelab.beans.BeanTest;
+
+public class Client 
+{
+public static void main(String arg[])
+{
+	ApplicationContext context=new ClassPathXmlApplicationContext("/com/bridgelab/resource/Spring.xml");
+	System.out.println(context);
+}
+}

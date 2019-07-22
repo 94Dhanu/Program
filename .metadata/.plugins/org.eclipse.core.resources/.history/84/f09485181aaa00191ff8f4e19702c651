@@ -1,0 +1,10 @@
+package com.bridgelab.beans;
+
+public class BeanTest 
+{
+protected BeanTest()
+{
+	System.out.println("Test....");
+	
+}
+}

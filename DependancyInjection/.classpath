@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/admin1/Downloads/spring-context-3.2.0.release.jar/spring-context-3.2.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/admin1/Downloads/commons-logging-1.2.1.1.jar"/>
+	<classpathentry kind="lib" path="/home/admin1/Downloads/spring-beans-2.0.jar"/>
+	<classpathentry kind="lib" path="/home/admin1/Downloads/spring-core-3.0.2.release.jar/spring-core-3.0.2.RELEASE.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/IOC"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

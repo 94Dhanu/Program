@@ -1,0 +1,10 @@
+package com.bridgelab.beans;
+
+public class BeanTest 
+{
+private BeanTest()//private can be access out side of the class in spring
+{
+	System.out.println("Test....");
+	
+}
+}

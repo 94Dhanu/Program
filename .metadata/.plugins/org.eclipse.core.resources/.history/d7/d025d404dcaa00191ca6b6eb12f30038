@@ -1,0 +1,9 @@
+package com.bridgelabz.beans;
+
+import org.springframework.stereotype.Component;
+
+@Component("car")
+public interface Vehicle {
+	public void drive();
+
+}

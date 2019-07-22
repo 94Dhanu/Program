@@ -1,0 +1,5 @@
+package Spring.IOC;
+
+public class Car {
+
+}
