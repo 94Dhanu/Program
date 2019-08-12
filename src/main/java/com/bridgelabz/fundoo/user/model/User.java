@@ -2,7 +2,7 @@ package com.bridgelabz.fundoo.user.model;
 
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-
+import java.util.List;
 
 import javax.persistence.Entity;
 
@@ -10,6 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.bridgelabz.fundoo.note.model.Label;
+
 import lombok.Data;
 
 @Entity
@@ -84,6 +87,10 @@ public class User {
 		
 	}
 	public Object getNotes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public List<Label> getLabel() {
 		// TODO Auto-generated method stub
 		return null;
 	}
