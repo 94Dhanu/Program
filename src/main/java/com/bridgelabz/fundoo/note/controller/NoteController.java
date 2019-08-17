@@ -56,7 +56,7 @@ public class NoteController
 		Response responseStatus=noteService.delete(token, noteId);
 		return new ResponseEntity<Response>(responseStatus,HttpStatus.OK);
 	}
-	@DeleteMapping("/delete")
+	@DeleteMapping("/deletepermenent")
 	public ResponseEntity<Response>deleteNoteFromDisk(@RequestHeader String token,@RequestParam Long noteId){
 		//logger.info(notesDto.toString());
 		Response responseStatus=noteService.deletePermanently(token, noteId);
@@ -101,4 +101,18 @@ public class NoteController
 		Response responseStatus=noteService.colourNote(token, colorDto);
 		return new ResponseEntity<Response>(responseStatus,HttpStatus.OK);
 	}
+	@PostMapping("/addcolaborator")
+	public ResponseEntity<Response>CollaboratorAdd(@RequestHeader String token,@RequestHeader Long noteId,@RequestParam String email){
+		//logger.info(notesDto.toString());
+		Response responseStatus=noteService.addCollabrator(token, email, noteId);
+		return new ResponseEntity<Response>(responseStatus,HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/removecollaborator")
+	public ResponseEntity<Response>CollaboratorRemove(@RequestHeader String token,@RequestParam Long noteId,@RequestHeader String email){
+		//logger.info(notesDto.toString());
+		Response responseStatus=noteService.removeCollabrator(token, email, noteId);
+		return new ResponseEntity<Response>(responseStatus,HttpStatus.OK);
+	}
+	
 }

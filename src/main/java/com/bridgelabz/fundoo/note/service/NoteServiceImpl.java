@@ -3,7 +3,7 @@ package com.bridgelabz.fundoo.note.service;
 //import com.bridgelabz.fundoo.note.controller.DeleteMapping;
 import com.bridgelabz.fundoo.note.dto.ColorDto;
 import com.bridgelabz.fundoo.note.dto.NoteDto;
-
+//import com.bridgelabz.fundoo.note.dto.NoteDto;
 import com.bridgelabz.fundoo.response.Response;
 
 
@@ -11,7 +11,8 @@ import com.bridgelabz.fundoo.response.Response;
 	import java.time.LocalDateTime;
 	import java.time.format.DateTimeFormatter;
 	import java.util.ArrayList;
-	import java.util.List;
+import java.util.Collection;
+import java.util.List;
 	import java.util.Optional;
 
 	import org.modelmapper.ModelMapper;
@@ -38,7 +39,7 @@ import com.bridgelabz.fundoo.exception.UserException;
 	import com.bridgelabz.fundoo.utility.TokenGenerator;
 	import com.bridgelabz.fundoo.utility.Utility;
 
-	@PropertySource("classpath:message.properties")
+	//@PropertySource("classpath:message.properties")
 	@Service("noteService")
 	public  class NoteServiceImpl implements NoteService 
 	{
@@ -76,9 +77,9 @@ import com.bridgelabz.fundoo.exception.UserException;
 			notes.setUserId(id);
 			notes.setCreated(LocalDateTime.now());
 			notes.setModified(LocalDateTime.now());
-			//user.get().getNotes().add(notes);
+			((List<Note>) user.get().getNotes()).add(notes);
 			notesRepository.save(notes);
-			//userRepository.save(user.get());
+			userRepository.save(user.get());
 			
 			
 			Response response=ResponseHelper.statusResponse(200, environment.getProperty("status.notes.createdSuccessfull"));
@@ -112,7 +113,7 @@ import com.bridgelabz.fundoo.exception.UserException;
 			}
 			
 				notes.setModified(LocalDateTime.now());
-				notesRepository.save(notes);
+				notesRepository.delete(notes);
 				Response response=ResponseHelper.statusResponse(200, environment.getProperty("status.note.trashed"));
 			
 			return response;
@@ -121,10 +122,13 @@ import com.bridgelabz.fundoo.exception.UserException;
 		public Response deletePermanently(String token, Long noteId) {
 			long id =userToken.decodeToken(token);
 			Optional<User> user=userRepository.findById(id);
+			//orElseThrow method will return value only if it’s present. Otherwise, it’ll throw an exception created by a provided supplier.
+
+
 			Note note=notesRepository.findById(noteId).orElseThrow();
 			System.out.println(note);
 			if(note.isTrash()==true) {
-				//user.get().getNotes().remove(note);
+				((List<Note>) user.get().getNotes()).remove(note);
 				userRepository.save(user.get());
 				notesRepository.delete(note);
 				Response response=ResponseHelper.statusResponse(200, environment.getProperty("status.note.deleted"));
@@ -153,7 +157,7 @@ import com.bridgelabz.fundoo.exception.UserException;
 				notes.setPined(true);
 				notes.setModified(LocalDateTime.now());
 				notesRepository.save(notes);
-				Response response=ResponseHelper.statusResponse(200, environment.getProperty("status.note.pinned"));
+				Response response=ResponseHelper.statusResponse(200, environment.getProperty("statu.note.pinned"));
 				return response;
 			}else {
 				notes.setPined(false);
@@ -166,6 +170,7 @@ import com.bridgelabz.fundoo.exception.UserException;
 		}
 	           
 		@Override
+		
 		public Response archiveAndUnArchive(String token, Long noteId) {
 			long id =userToken.decodeToken(token);
 			Note notes=notesRepository.findBynoteIdAndUserId(noteId, id);
@@ -223,9 +228,77 @@ import com.bridgelabz.fundoo.exception.UserException;
 			return response;
 		}
 		@Override
+		public Response addCollabrator(String token, String email, Long noteId) {
+			long userId=userToken.decodeToken(token);
+			System.out.println("userId"+userId);
+			Optional<User> mainUser=userRepository.findById(userId);
+			Optional<User> user=userRepository.findByEmailId(email);
+			System.out.println(user);
+			System.out.println(mainUser);
+			if(!user.isPresent()) {
+				throw  new UserException(-4,"No user exit");
+		}
+			Note note=notesRepository.findBynoteIdAndUserId(noteId, userId);
+			Note note1 = notesRepository.findByUserIdAndNoteId(userId, noteId);
+			System.out.println("note is"+note1);
+			if(note==null) {
+				throw new UserException(-5,"No note exist");
+			}
+			if(user.get().getCollabaratedNotes().contains(note)) {
+				throw new UserException(-5,"Note is already collabrated");
+			}
+			
+			user.get().getCollabaratedNotes().add(note);
+			note.getCollaboratedUser().add(note);
+			userRepository.save(user.get());
+			notesRepository.save(note);
+			Utility.send(email, "Collaborated Note", note.getUserId());
+			Response response=ResponseHelper.statusResponse(200, environment.getProperty("status.note.collaborated"));
+			return response;
+		}
+		@Override
+		public Response removeCollabrator(String token, String email, Long noteId) {
+			long userId=userToken.decodeToken(token);
+			Optional<User> mainUser=userRepository.findById(userId);
+			Optional<User> user=userRepository.findByEmailId(email);
+			if(!user.isPresent()) {
+				throw  new UserException(-4,"No user exit");
+			}
+			Note note=notesRepository.findBynoteIdAndUserId(userId, noteId);
+			if(note==null) {
+				throw new UserException(-5,"No note exist");
+			}
+			if(user.get().getCollabaratedNotes().contains(note)) {
+				throw new UserException(-5,"Note is already collabrated");
+			}
+			
+			user.get().getCollabaratedNotes().remove(note);
+			note.getCollaboratedUser().remove(user.get());
+			userRepository.save(user.get());
+			notesRepository.save(note);
+			
+			Response response=ResponseHelper.statusResponse(200, environment.getProperty("status.note.removecollaborated"));
+			return response;
+		}
+
+
+		@Override
 		public List<NoteDto> getAllArchive(String token) {
-			// TODO Auto-generated method stub
-			return null;
+
+			long id =userToken.decodeToken(token);
+			List<Note> notes=(List<Note>)notesRepository.findByUserId(id);
+
+			List<NoteDto> listNotes=new ArrayList<NoteDto>();
+			for(Note userNotes:notes) {
+				NoteDto noteDto=modelMapper.map(userNotes,NoteDto.class);
+				if(userNotes.isArchived()==true && userNotes.isTrash()==false) {
+					listNotes.add(noteDto);
+				}
+			
+		}
+
+
+			return listNotes;
 		}
 
 

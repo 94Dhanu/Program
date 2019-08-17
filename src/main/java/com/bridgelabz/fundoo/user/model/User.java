@@ -4,14 +4,17 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.bridgelabz.fundoo.note.model.Label;
+import com.bridgelabz.fundoo.note.model.Note;
 
 import lombok.Data;
 
@@ -30,6 +33,12 @@ public class User {
 	private String mobileNum;
 	private boolean isVerify;
 	private LocalDateTime registerDate = LocalDateTime.now();
+	@ManyToMany(cascade = CascadeType.ALL)
+	private List<Note> collabaratedNotes;
+	@ManyToMany(cascade = CascadeType.ALL)
+	private List<Label> label;
+	@ManyToMany(cascade = CascadeType.ALL)
+	private List<Note> notes;
 	public Long getUserId() {
 		return userId;
 	}
@@ -78,21 +87,25 @@ public class User {
 	public void setRegisterDate(LocalDateTime registerDate) {
 		this.registerDate = registerDate;
 	}
-	public Path getProfile() {
-		// TODO Auto-generated method stub
-		return null;
+
+		public List<Note> getNotes() {
+		return notes;
 	}
-	public void setProfile(String id) {
-		// TODO Auto-generated method stub
-		
-	}
-	public Object getNotes() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setNotes(List<Note> notes) {
+		this.notes = notes;
 	}
 	public List<Label> getLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		return label;
 	}
+	public void setLabel(List<Label> label) {
+		this.label = label;
+	}
+	public List<Note> getCollabaratedNotes() {
+		return collabaratedNotes;
+	}
+	public void setCollabaratedNotes(List<Note> collabaratedNotes) {
+		this.collabaratedNotes = collabaratedNotes;
+	}
+	
 	
 }

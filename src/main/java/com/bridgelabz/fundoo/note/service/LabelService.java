@@ -23,6 +23,14 @@ public interface LabelService {
 	
 
 	public List<Label> getAllLabel(String token);
+
+
+
+	public Response addLabelToNote(Long labelId, String token, Long noteId);
+
+
+
+	public Response removeLabelFromNote(Long labelId, String token, Long noteId);
 	
 
 }

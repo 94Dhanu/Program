@@ -62,5 +62,16 @@ public class LabelController {
 		List<Label> listLabel = labelService.getAllLabel(token);
 		return listLabel;
 	}
+	@PutMapping("/addlabeltonote")
+	ResponseEntity<Response> addNoteToLabels(@RequestParam Long labelId , @RequestHeader String token , @RequestParam Long noteId){
+		Response statusResponse = labelService.addLabelToNote(labelId, token, noteId);
+		return new ResponseEntity<Response>(statusResponse,HttpStatus.OK);
+	}
+	
+	@PutMapping("/removelabelfromnote")
+	ResponseEntity<Response> removeNoteToLabels(@RequestParam Long labelId , @RequestHeader String token , @RequestParam Long noteId){
+		Response statusResponse = labelService.removeLabelFromNote(labelId, token, noteId);
+		return new ResponseEntity<Response>(statusResponse,HttpStatus.OK);
+	}
 	
 }

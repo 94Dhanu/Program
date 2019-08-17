@@ -36,9 +36,9 @@ public class LabelServiceImpl implements LabelService {
 	
 	@Autowired
 	private UserRepo userRepository;
-//	
-//	@Autowired
-//	private NotesRepository notesRepository;
+	
+	@Autowired
+	private NotesRepository notesRepository;
 	
 	@Autowired
 	private TokenGenerator userToken;
@@ -124,6 +124,64 @@ public class LabelServiceImpl implements LabelService {
 		Response response=ResponseHelper.statusResponse(100, environment.getProperty("status.label.updated"));
 		return response;
 	}
+	@Override
+	public Response addLabelToNote(Long labelId, String token, Long noteId) {
+		long userId = userToken.decodeToken(token);
+		Optional<User> user = userRepository.findById(userId);
+		if(!user.isPresent()) {
+			throw new UserException(-6, "Invalid input");
+		}
+
+		Label label=labelRepository.findByLabelIdAndUserId(labelId, userId);
+		if(label==null) {
+			throw new UserException(-6,"No label exists");
+		}
+		Note note=notesRepository.findBynoteIdAndUserId(noteId, userId);
+		if(note==null) {
+			throw new UserException(-6,"No Note  exists");
+		}
+		
+		label.setModifiedDate(LocalDateTime.now());
+		//label.getNotes().add(note);
+		note.getListLabel().add(label);
+		note.setModified(LocalDateTime.now());
+		labelRepository.save(label);
+		notesRepository.save(note);
+		
+		
+		Response response=ResponseHelper.statusResponse(100, environment.getProperty("status.label.addedtonote"));
+		return response;
+	}
+
+	@Override
+	public Response removeLabelFromNote(Long labelId, String token, Long noteId) {
+		long userId = userToken.decodeToken(token);
+		Optional<User> user = userRepository.findById(userId);
+		if(!user.isPresent()) {
+			throw new UserException(-6, "Invalid input");
+		}
+
+		Label label=labelRepository.findByLabelIdAndUserId(labelId, userId);
+		if(label==null) {
+			throw new UserException(-6,"No label exists");
+		}
+		
+		Note note=notesRepository.findBynoteIdAndUserId(noteId, userId);
+		if(note==null) {
+			throw new UserException(-6,"No Note  exists");
+		}
+		
+		label.setModifiedDate(LocalDateTime.now());
+		note.getListLabel().remove(label);
+		note.setModified(LocalDateTime.now());
+		labelRepository.save(label);
+		notesRepository.save(note);
+		
+		
+		Response response=ResponseHelper.statusResponse(100, environment.getProperty("status.label.removedfromnote"));
+		return response;
+	}
+
 
 	@Override
 	public List<Label> getAllLabel(String token) {

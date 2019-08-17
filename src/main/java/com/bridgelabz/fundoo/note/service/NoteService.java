@@ -23,6 +23,8 @@ public interface NoteService {
 	public Response archiveAndUnArchive(String token, Long noteId);
 	public Response trashAndUnTrash(String token, Long noteId);
 	public Response colourNote(String token, ColorDto colorDto);
+	Response addCollabrator(String token, String email, Long noteId);
+	public Response removeCollabrator(String token, String email, Long noteId);
 	
 	
 }

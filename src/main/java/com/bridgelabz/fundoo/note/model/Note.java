@@ -21,9 +21,9 @@ import lombok.Data;
 @Data
 @Entity
 @Table
-public class Note implements Serializable {
+public class Note  {
 	
-	private static final long serialVersionUID = 1L;
+
 	
 	@Id
 	@Column(name = "noteId")
@@ -50,8 +50,8 @@ public class Note implements Serializable {
 	
 	@Column(name="colour")
 	private String colour;
-	
-	
+	@ManyToMany(cascade = CascadeType.ALL)
+	private List<Note> collaboratedUser;
 	@Column(name = "image")
 	private String image;
 	
@@ -60,7 +60,7 @@ public class Note implements Serializable {
 	
 	@Column(name="modified")
 	private LocalDateTime modified;
-	@JsonIgnore
+
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Label> listLabel;
 	public Long getNoteId() {
@@ -135,10 +135,11 @@ public class Note implements Serializable {
 	public void setListLabel(List<Label> listLabel) {
 		this.listLabel = listLabel;
 	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public List<Note> getCollaboratedUser() {
+		// TODO Auto-generated method stub
+		return collaboratedUser;
 	}
-	
+
 	
 	
 	
