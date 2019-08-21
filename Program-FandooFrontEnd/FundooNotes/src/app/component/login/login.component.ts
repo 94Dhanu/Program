@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
       "password": new FormControl(this.login.password, [Validators.required, Validators.minLength(6)])
     }
     )
-    // this.token = this.route.snapshot.paramMap.get('token'),
+    this.token = this.route.snapshot.paramMap.get('token'),
     console.log("token:"+this.token)
   }
   onLogin() {
@@ -44,16 +44,16 @@ export class LoginComponent implements OnInit {
             
             "Login Successfully",
             "undo",
-            { duration: 5000 }
+            { duration: 2500 }
             
           )
-          // this.router.navigate(['/Home'])
+          this.router.navigate(['/dashboard'])
         } else {
           console.log(response);
           this.snackBar.open(
             "Login Failed",
             "undo",
-            { duration: 5000 }
+            { duration: 2500 }
           )
         }
 

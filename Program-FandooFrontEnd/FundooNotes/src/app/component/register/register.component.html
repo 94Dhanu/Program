@@ -52,9 +52,8 @@
           </mat-form-field>
         </div>
         <div class="buttonRegister">
-          <button mat-raised-button color="primary" id="register" routerLink='/register'>Register</button>
+          <button mat-raised-button color="primary" id="register" (click)="onRegister()">Register</button>
           <button mat-raised-button color="primary" id="login" routerLink='/login'> Login </button>
-          <button mat-raised-button color="primary" id="forgetpassword" routerLink='/forgotpassword'> ForgotPassword</button>
         </div>
 
       </form>

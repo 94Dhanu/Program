@@ -12,14 +12,13 @@ import{FormsModule,ReactiveFormsModule} from '@angular/forms'
 import {MaterialModule} from '../app/material.module';
 
 import { HttpClientModule } from '@angular/common/http';
+
 import { LoginComponent } from './component/login/login.component';
-import { ForgotpasswordComponent } from './component/forgotpassword/forgotpassword.component';
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
     LoginComponent,
-    ForgotpasswordComponent
  
   ],
   imports: [

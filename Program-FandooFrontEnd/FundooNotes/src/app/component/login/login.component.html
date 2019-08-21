@@ -1,14 +1,13 @@
 <div class="main" fxLayout="column" fxLayoutAlign="center center">
     <mat-card class="matCard">
       <mat-card-title class="matCardTitle" fxLayoutAlign="center center">
-        <h2 class="headertwo">FundooApplication</h2>
+        <h2 class="headertwo">FundooNotes</h2>
       </mat-card-title>
       <mat-card-subtitle class="matCardSubTitle" fxLayoutAlign="center center">
         <h2>Login</h2>
       </mat-card-subtitle>
       <div>
         <form [formGroup]="loginForm">
-          <div fxLayout="column" fxLayoutGap="10px">
           <div>
             <mat-form-field appearance="outline" class="input-style">
               <mat-label>Email</mat-label>
@@ -23,7 +22,6 @@
                 formControlName="password" [(ngModel)]="login.password" required>
               <mat-icon matSuffix (click)="hide = !hide">{{!hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </mat-form-field>
-          </div>
           </div>
           <div class="buttonLogin">
             <button mat-raised-button color="primary" id="login" (click)="onLogin()">Login</button>
