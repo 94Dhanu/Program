@@ -90,6 +90,20 @@ public class UserController {
 	public List<User> getAllUsers(){
 		return userRepo.findAll();
 	}
+	@GetMapping("/getprofilepic/{token}")
+	public Resource getProfilePic(@PathVariable("token") String token){
+		Resource resource=userService.getProfilePic(token);
+		return resource;
+	}
+	@PutMapping(value="/uploadprofile",consumes=MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<Response> addProfile(@RequestHeader(value="token") String token, @RequestParam("File") MultipartFile picture)
+			throws UserException {
+		Response response=userService.uploadProfilePic(token, picture);
+		
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+
+	}
+
 	
 	
 }

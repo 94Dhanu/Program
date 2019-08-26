@@ -79,6 +79,7 @@ import com.bridgelabz.fundoo.exception.UserException;
 			notes.setModified(LocalDateTime.now());
 			((List<Note>) user.get().getNotes()).add(notes);
 			notesRepository.save(notes);
+		
 			userRepository.save(user.get());
 			
 			

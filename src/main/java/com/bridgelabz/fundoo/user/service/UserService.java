@@ -42,4 +42,10 @@ public interface UserService {
 	ResponseToken authentication(Optional<User> user, String password)
 			throws UnsupportedEncodingException, UserException;
 
+	Resource getProfilePic(String token);
+
+
+
+	Response uploadProfilePic(String token, MultipartFile picture);
+
 }

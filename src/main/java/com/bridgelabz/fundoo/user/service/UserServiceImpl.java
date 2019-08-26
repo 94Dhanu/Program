@@ -80,7 +80,7 @@ public  class UserServiceImpl implements UserService {
 		}
 		// encode user password
 		String password = passwordEncoder.encode(userDto.getPassword());
-
+	
 		user.setPassword(password);
 		user = userRepo.save(user);
 		Long userId = user.getUserId();
@@ -180,29 +180,41 @@ public  class UserServiceImpl implements UserService {
 
 	
 
+	@Override
+	public Response uploadProfilePic(String token, MultipartFile picture) {
+		long userId=tokenUtil.decodeToken(token);
+		User user=userRepo.findById(userId).orElseThrow(()-> new UserException(404,"user is not found"));
+		UUID uuid=UUID.randomUUID();
+		String id=uuid.toString();
+		try {
+			//Files.copy(picture.getInputStream(), location.resolve(id),StandardCopyOption.REPLACE_EXISTING);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			
+		}
+		user.setProfile(id);
+		userRepo.save(user);
+		return ResponseHelper.statusResponse(200, "profile updated successfully");
+	}
 
 
-//	@Override
-//	public String getProfile(String token) throws UserException {
-//		long id=tokenUtil.decodeToken(token);
-//		User user=userRepo.findById(id).orElseThrow(()-> new UserException(404,"user is not found"));
-//		return user.getProfile();
-//	}
 
-
-
-	
-
-	
-
-
-	
-
-
-	
-
-
-	
-
+	@Override
+	public Resource getProfilePic(String token) {
+		long userId=tokenUtil.decodeToken(token);
+		User user=userRepo.findById(userId).orElseThrow(()-> new UserException(404,"user is not found"));
+		//Path url=location.resolve(user.getProfile());
+//		try {
+//			
+//			//Resource resource=new UrlResource(url.toUri());
+//			return null;
+//		}
+//		catch(MalformedURLException e){
+//			e.printStackTrace();
+//			
+//		}
+		return null;
+	}
 	
 }
